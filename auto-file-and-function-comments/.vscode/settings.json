@@ -1,0 +1,7 @@
+{
+    "comment-edit.author": "name",
+    "files.associations": {
+        "stdio.h": "c",
+        "testfile.h": "c"
+    }
+}
