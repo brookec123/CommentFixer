@@ -22,7 +22,7 @@ function activate(context) {
             }
             var firstArg = "--file "+currentlyOpenTabfilePath;
             let config  = vscode.workspace.getConfiguration('auto-file-and-function-comments');
-            var secondArg = "--author "+config.get('author', "Name");
+            var secondArg = "--author \"" + config.get('author', "First Last") + "\"";
             // Run the Python script
             let command = 'python ' + " " + pythonScriptPath + " " +firstArg + " " +secondArg;
             let terminalWindow = vscode.window.createTerminal("Comment Editor");

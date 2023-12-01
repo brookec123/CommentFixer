@@ -1,15 +1,16 @@
 {
   "name": "auto-file-and-function-comments",
   "displayName": "Auto File and Function Comments",
-  "description": "",
-  "version": "0.0.1",
+  "description": "This extension will allow you to add comments to your Java, C/C++ (and header) files.",
+  "publisher": "brookec",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.84.0"
   },
   "categories": [
-    "Other"
+    "Formatters", "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["auto-file-and-function-comments.comment-writer"],
   "main": "./extension.js",
   "contributes": {
     "configuration":
@@ -26,7 +27,14 @@
     "commands": [{
       "command": "auto-file-and-function-comments.comment-writer",
       "title": "Comment Writer"
-    }]
+    }],
+    "keybindings": [
+      {
+        "command": "auto-file-and-function-comments.comment-writer",
+        "key": "alt+W",
+        "mac": "alt+W"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
@@ -42,5 +50,9 @@
     "mocha": "^10.2.0",
     "typescript": "^5.2.2",
     "@vscode/test-electron": "^2.3.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brookec123/CommentFixer.git"
   }
 }
