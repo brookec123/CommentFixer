@@ -10,7 +10,7 @@ function activate(context) {
             var currentlyOpenTabfilePath = vscode.window.activeTextEditor.document.fileName;
             var fileType = vscode.window.activeTextEditor.document.languageId;
             var pythonScriptPath = "";
-            if (fileType == "c" ||fileType == "cpp")
+            if (fileType == "c" || fileType == "cpp")
             {
                 // Path to your Python script
                 pythonScriptPath = path.join(__dirname, '//C//c_comments.py');
@@ -20,6 +20,11 @@ function activate(context) {
                 // Path to your Python script
                 pythonScriptPath = path.join(__dirname, '//Java//java_comments.py');
             }
+            else if(fileType == "python")
+            {
+                // Path to your Python script
+                pythonScriptPath = path.join(__dirname, '//Python//python_comments.py');
+            }
             var firstArg = "--file "+currentlyOpenTabfilePath;
             let config  = vscode.workspace.getConfiguration('auto-file-and-function-comments');
             var secondArg = "--author \"" + config.get('author', "First Last") + "\"";
@@ -27,7 +32,7 @@ function activate(context) {
             let command = 'python ' + " " + pythonScriptPath + " " +firstArg + " " +secondArg;
             let terminalWindow = vscode.window.createTerminal("Comment Editor");
             terminalWindow.sendText(command);
-            setTimeout(() => {  terminalWindow.sendText("cls"); }, 2000);
+            setTimeout(() => { terminalWindow.sendText("cls"); }, 2000);
 
             
         } else {
