@@ -3,7 +3,7 @@
   "displayName": "Auto File and Function Comments",
   "description": "This extension will allow you to add comments to your Java, C/C++ (and header) files.",
   "publisher": "brookec",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.84.0"
   },
