@@ -1,10 +1,10 @@
-# auto-file-and-function-comments README
+# Auto File and Function Comments README
 
-This extension will allow you to add comments to your Java, C/C++ (and header) files. All you have to do is have the file you want commented open, then press Alt+W.
+This extension will allow you to add comments to your Python, Java, C/C++ (and header) files. All you have to do is have the file you want commented open, then press Alt+W.
 
 ## Features
 
-Adds file comments at the start for .java, .c, .cpp, .h, and .hpp files.  Adds function comments in .java, .h, and .hpp files.
+Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  Adds function comments in .py, .java, .h, and .hpp files.
 
 ## Extension Settings
 
@@ -27,6 +27,10 @@ None on record yet.
 ### 1.0.0
 
 Initial release of auto-file-and-function-comments.
+
+### 1.0.1
+
+Added functionality for python files.
 
 ---
 

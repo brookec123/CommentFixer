@@ -3,28 +3,42 @@ import os
 import regex as re
 from datetime import datetime
 
-def generate_method_comments(method_author, parameters):
+def generate_method_comments(method_author, parameters, return_value):
     method_comments = "    \"\"\"\n"
     method_comments += ("    Description: Written by: "+method_author+"\n")
     method_comments += ("    ### Parameters\n")
-    parameters.pop(0)
-    for param in parameters:
-        method_comments += ("    - "+param[1]+":"+param[0]+"\n")
+    if parameters == ["Not Specified"]:
+        method_comments += ("    - Not Specified\n")
+    else:
+        for param in parameters:
+            method_comments += ("    - "+param[1]+":"+param[2]+"\n")
     method_comments += ("    ### Returns\n")
-    method_comments += "    \"\"\""
+    method_comments += ("    - "+return_value+"\n")
+    method_comments += "    \"\"\"\n"
     return method_comments
 
+def get_params(line):
+    lst = re.findall(r"(([a-z]+)\s*:\s*([a-z]+))*", line)
+    lst = [x for x in lst if not x == ('', '', '')]
+    if len(lst) == 0:
+        return ["Not Specified"]
+    return lst
+
 def add_method_comments(lines, author):
-    method_comments_generated = set()
-    prev_method = ""
     method_start_pattern = r"^\s*def\s+([a-zA-Z0-9\*]+)\s*\("
-    method_param_pattern = r"([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)"
-    for i in reversed(range(len(lines))):
-        match = re.match(method_start_pattern, lines[i])
-        if match and lines[i] != prev_method and match.group(1) not in method_comments_generated:
-            prev_method = lines[i]
-            method_comments = generate_method_comments(author, re.findall(method_param_pattern, lines[i]))
-            lines.insert(i+1, method_comments)
+    method_end_pattern = r"->\s*([a-z]+):"
+    i = 0
+    while i < len(lines):
+        match1 = re.match(method_start_pattern, lines[i])
+        match2 = re.findall(method_end_pattern, lines[i])
+        if match1:
+            if match2:
+                method_comments = generate_method_comments(author, get_params(lines[i]), match2[0])
+                lines.insert(i+1, method_comments)
+            else:
+                method_comments = generate_method_comments(author, get_params(lines[i]), "Not Specified")
+                lines.insert(i+1, method_comments)
+        i = i+1
     return lines
 
 def generate_file_comments(file_name, file_author):
@@ -48,10 +62,10 @@ def remove_previous_comments(lines):
     return new_lines
 
 def handle_arguments():
-    parser = argparse.ArgumentParser(description="", usage="python c_comments.py (--file <file_location> | --folder <folder_location>) --author <author>")
+    parser = argparse.ArgumentParser(description="", usage="python java_comments.py (--file <file_location> | --folder <folder_location>) --author <author>")
     file_folder_group = parser.add_mutually_exclusive_group(required=True)
-    file_folder_group.add_argument("--file", dest="file_location", type=str, help="full .h file location that needs to be commented")
-    file_folder_group.add_argument("--folder", dest="folder_location", type=str, help="folder containing all .c and .h files that need to be commented")
+    file_folder_group.add_argument("--file", dest="file_location", type=str, help="full .java file location that needs to be commented")
+    file_folder_group.add_argument("--folder", dest="folder_location", type=str, help="folder containing all .java files that need to be commented")
     parser.add_argument("--author", dest="author", type=str, required=True, help="author of the .h file")
 
     args = parser.parse_args()
@@ -61,12 +75,6 @@ def handle_arguments():
         if not os.path.isdir(args.folder_location):
             print(f"The specified path '{args.folder_location}' is not a valid directory.")
             return
-
-    for filename in os.listdir(args.folder_location):
-        if filename.endswith(".py"):
-            file_path = os.path.join(args.folder_location, filename)
-            main(file_path, args.author)
-    
 
 def main(file_location, author):
     file_name, _ = os.path.splitext(os.path.basename(file_location))
