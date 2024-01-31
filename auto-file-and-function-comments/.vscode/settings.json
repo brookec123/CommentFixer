@@ -1,7 +1,3 @@
 {
-    "comment-edit.author": "name",
-    "files.associations": {
-        "stdio.h": "c",
-        "testfile.h": "c"
-    }
+  "auto-file-and-function-comments.comment-editor.author": "CustomAuthor"
 }

@@ -6,6 +6,19 @@ This extension will allow you to add comments to your Python, Java, C/C++ (and h
 
 Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  Adds function comments in .py, .java, .h, and .hpp files.
 
+# Languages Currently Supported (and Will be Supported in The Future)
+&#x2611; C
+
+&#x2611; C++
+
+&#x2611; Java
+
+&#x2611; Python
+
+&#x2610; JavaScript
+
+&#x2610; Other
+
 ## Extension Settings
 
 This extension contributes the following settings:
@@ -13,14 +26,16 @@ This extension contributes the following settings:
 * `auto-file-and-function-comments.author`: The author's name for the file(s) and function(s).
 
 ## Known Issues
-
-None on record yet.
+- ~~Can not change author name in extension settings as intended~~
+- Does not properly comment classes (and class methods) in C++
+- Currently overwrites previously generated comments if run more than once in the file
 
 ## Future Features
 
 - Add comments for other programming languages
-- Allow for comment rewrite or keep current comments for files/functions
+- Allow for comment rewrite or keep current comments for files/functions (determined by a user setting)
 - Allow user to add more/customize default comment lines
+- 
 
 ## Release Notes
 

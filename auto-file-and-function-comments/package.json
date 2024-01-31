@@ -10,27 +10,26 @@
   "categories": [
     "Formatters", "Other"
   ],
-  "activationEvents": ["auto-file-and-function-comments.comment-writer"],
+  "activationEvents": ["auto-file-and-function-comments.comment-editor"],
   "main": "./extension.js",
   "contributes": {
-    "configuration":
-    {
-      "properties": {},
-      "title": "Commenter",
-      "commentedit.author":
-      {
-        "type": "string",
-        "default": "name",
-        "description": "Author of file."
-      }
+    "configuration": {
+        "properties": {
+            "brookec.auto-file-and-function-comments.comment-editor.author": {
+                "type": "string",
+                "default": "name",
+                "description": "Author of file."
+            }
+        },
+        "title": "Auto File and Function Comments"
     },
     "commands": [{
-      "command": "auto-file-and-function-comments.comment-writer",
+      "command": "auto-file-and-function-comments.comment-editor",
       "title": "Comment Writer"
     }],
     "keybindings": [
       {
-        "command": "auto-file-and-function-comments.comment-writer",
+        "command": "auto-file-and-function-comments.comment-editor",
         "key": "alt+W",
         "mac": "alt+W"
       }
