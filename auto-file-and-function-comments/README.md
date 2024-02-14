@@ -1,6 +1,6 @@
 # Auto File and Function Comments README
 
-This extension will allow you to add comments to your Python, Java, C/C++ (and header) files. All you have to do is have the file you want commented open, then press `Alt+W`.
+This extension will allow you to add comments to your Python, Java, C/C++ (and header) files. All you have to do is have the file you want commented open, then press `Alt+W`. Please note that this extension assumes that your code has no syntax errors.
 
 ## Features
 

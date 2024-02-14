@@ -1,5 +1,6 @@
 const vscode = require("vscode");
 const path = require("path");
+const { spawn } = require("child_process");
 
 function getUserDefinedSettings() {
     const config = vscode.workspace.getConfiguration("brookec.auto-commenter.comment-writer");
@@ -16,16 +17,13 @@ function activate(context) {
             var fileName = vscode.window.activeTextEditor.document.fileName;
             var fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length) || fileName;
             var pythonScriptPath = "";
+            
             if (fileExtension == "c" || fileExtension == "cpp" || fileExtension == "h" || fileExtension == "hpp")
             {
+                // console.log(fileExtension)
                 // Path to your Python script
                 pythonScriptPath = path.join(__dirname, "//C//c_comments.py");
             }
-            // else if (fileExtension == "cpp" || fileExtension == "h" || fileExtension == "hpp")
-            // {
-            //     // Path to your Python script
-            //     pythonScriptPath = path.join(__dirname, "//CPP//cpp_comments.py");
-            // }
             else if (fileExtension == "java")
             {
                 // Path to your Python script
@@ -36,16 +34,27 @@ function activate(context) {
                 // Path to your Python script
                 pythonScriptPath = path.join(__dirname, "//Python//python_comments.py");
             }
-            var firstArg = "--file "+currentlyOpenTabfilePath;
-            var secondArg = "--author \"" + getUserDefinedSettings() + "\"";
             
             console.log("Author from settings:", getUserDefinedSettings());
-            // Run the Python script
-            let command = "python " + " " + pythonScriptPath + " " +firstArg + " " +secondArg;
-            let terminalWindow = vscode.window.createTerminal("Auto Commenter");
-            terminalWindow.sendText(command);
-            setTimeout(() => { terminalWindow.sendText("cls"); }, 2000);
 
+            // Construct the command to execute the Python script with arguments
+            let command = `python ${pythonScriptPath} --file ${currentlyOpenTabfilePath} --author "${getUserDefinedSettings()}"`;
+
+            // Execute the Python script in a child process
+            const pythonProcess = spawn(command, { shell: true });
+
+
+            // Capture output from the child process
+            // pythonProcess.stdout.on("data", (data) => {
+            //     console.log(`Received data from Python script: ${data}`);
+            // });
+
+            pythonProcess.stderr.on("data", (data) => {
+                console.error(`Error from Python script: ${data}`);
+            });
+
+            // Optionally, you can clear the terminal after a delay
+            setTimeout(() => { vscode.commands.executeCommand("workbench.action.terminal.clear"); }, 2000);
             
         } else {
             vscode.window.showInformationMessage("No active editor found.");

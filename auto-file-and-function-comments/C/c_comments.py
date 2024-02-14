@@ -20,11 +20,13 @@ def add_method_comments(lines: List[str], author: str) -> List[str]:
     method_start_pattern = r"^\s*([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)\s*\("
     method_param_pattern = r"([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)"
     for i in reversed(range(len(lines))):
+        print("Line:", lines[i])
         match = re.match(method_start_pattern, lines[i])
         if match and lines[i] != prev_method and match.group(2) not in method_comments_generated:
             prev_method = lines[i]
             method_comments = generate_method_comments(author, re.findall(method_param_pattern, lines[i]))
             lines.insert(i, method_comments)
+
     return lines
 
 def generate_file_comments(file_name: str, file_author: str) -> str:
@@ -55,18 +57,16 @@ def add_class_comments(lines: List[str], author: str) -> List[str]:
             lines.insert(i, class_comments)
     return lines
 
-def generate_class_comments(class_author: str, inheritence_classes: List[str]=[""]) -> str:
+def generate_class_comments(class_author: str, inheritence_classes: List[str]=[]) -> str:
     class_comments = ""
     class_comments += ("/// @brief Written by: "+class_author+"\n")
-    if inheritence_classes != "":
+    if inheritence_classes != []:
         class_comments += ("/// Inherites: " + inheritence_classes[0])
         inheritence_classes.pop(0)
         for c in inheritence_classes:
             class_comments += ", " + c
         class_comments += "\n"
         return class_comments
-
-
 
 def remove_previous_comments(lines: List[str]) -> List[str]:
     new_lines = []
@@ -103,6 +103,8 @@ def main(file_location: str, author: str) -> None:
     lines = remove_previous_comments(lines)
     file_comments = generate_file_comments(file_name, author)
     lines.insert(0, file_comments)
+    
+    lines = add_class_comments(lines, author)
     
     if file_extension == ".h":
         lines = add_method_comments(lines, author)

@@ -1,6 +1,0 @@
-echo Hello
-mkdir NewFolder
-dir
-cd NewFolder
-echo This is a test > test.txt
-pip install pygame
