@@ -3,13 +3,13 @@ const path = require("path");
 const { spawn } = require("child_process");
 
 function getUserDefinedSettings() {
-    const config = vscode.workspace.getConfiguration("brookec.auto-commenter.comment-writer");
+    const config = vscode.workspace.getConfiguration("brookec.auto-file-and-function-comments.comment-writer");
     const author = config.get("author");
     return author;
 }
 
 function activate(context) {
-    let disposableWriter = vscode.commands.registerCommand("auto-commenter.comment-writer", () => {
+    let disposableWriter = vscode.commands.registerCommand("auto-file-and-function-comments.comment-writer", () => {
         const activeTextEditor = vscode.window.activeTextEditor;
 
         if (activeTextEditor) {

@@ -1,6 +1,6 @@
 {
-  "name": "auto-commenter",
-  "displayName": "Auto Commenter",
+  "name": "auto-file-and-function-comments",
+  "displayName": "Auto File and Function Comments",
   "description": "This extension will allow you to add comments to your Java, C/C++ (and header), and python files.",
   "publisher": "brookec",
   "version": "1.0.2",
@@ -10,26 +10,26 @@
   "categories": [
     "Formatters", "Other"
   ],
-  "activationEvents": ["auto-commenter.comment-writer"],
+  "activationEvents": ["auto-file-and-function-comments.comment-writer"],
   "main": "./extension.js",
   "contributes": {
     "configuration": {
         "properties": {
-            "brookec.auto-commenter.comment-writer.author": {
+            "brookec.auto-file-and-function-comments.comment-writer.author": {
                 "type": "string",
                 "default": "name",
                 "description": "Author of file."
             }
         },
-        "title": "Auto Commenter"
+        "title": "Auto File and Function Comments"
     },
     "commands": [{
-      "command": "auto-commenter.comment-writer",
+      "command": "auto-file-and-function-comments.comment-writer",
       "title": "Comment Writer"
     }],
     "keybindings": [
       {
-        "command": "auto-commenter.comment-writer",
+        "command": "auto-file-and-function-comments.comment-writer",
         "key": "alt+W", 
         "mac": "alt+W"
       }
