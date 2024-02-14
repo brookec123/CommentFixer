@@ -35,7 +35,6 @@ This extension contributes the following settings:
 - Add comments for other programming languages
 - Allow for comment rewrite or keep current comments for files/functions (determined by a user setting)
 - Allow user to add more/customize default comment lines
-- 
 
 ## Release Notes
 
@@ -46,6 +45,9 @@ Initial release of auto-file-and-function-comments.
 ### 1.0.1
 
 Added functionality for python files.
+
+### 1.0.2
+Fixed ability to change author name.
 
 ---
 
