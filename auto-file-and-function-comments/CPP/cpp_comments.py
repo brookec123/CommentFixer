@@ -13,9 +13,6 @@ def generate_method_comments(method_author, parameters):
     method_comments += ("/// @return ")
     return method_comments
 
-def add_class_comments(lines, author):
-    pass
-
 def add_method_comments(lines, author):
     method_comments_generated = set()
     prev_method = ""
@@ -27,6 +24,25 @@ def add_method_comments(lines, author):
             prev_method = lines[i]
             method_comments = generate_method_comments(author, re.findall(method_param_pattern, lines[i]))
             lines.insert(i, method_comments)
+    return lines
+
+def generate_class_comments(class_author: str, inheritence_classes=[""]):
+    class_comments = ""
+    class_comments += ("/// @brief Written by: "+class_author+"\n")
+    if inheritence_classes != "":
+        class_comments += ("/// Inherites: " + inheritence_classes[0])
+        inheritence_classes.pop(0)
+        for c in inheritence_classes:
+            class_comments += ", " + c
+        class_comments += "\n"
+
+def add_class_comments(lines, author):
+    class_start_pattern = r"^class (\S+)" # no inheritence
+    for i in range(len(lines)):
+        match = re.match(class_start_pattern, lines[i])
+        if match:
+            class_comments = generate_class_comments(author)
+            lines.insert(i, class_comments)
     return lines
 
 def generate_file_comments(file_name, file_author):

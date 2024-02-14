@@ -1,9 +1,10 @@
 import argparse
 import os
 import regex as re
+from typing import List
 from datetime import datetime
 
-def generate_method_comments(method_author, parameters, return_value):
+def generate_method_comments(method_author: str, parameters: List[str], return_value: str) -> str:
     method_comments = "    \"\"\"\n"
     method_comments += ("    Description: Written by: "+method_author+"\n")
     method_comments += ("    ### Parameters\n")
@@ -17,14 +18,14 @@ def generate_method_comments(method_author, parameters, return_value):
     method_comments += "    \"\"\"\n"
     return method_comments
 
-def get_params(line):
+def get_params(line: str) -> List[str]:
     lst = re.findall(r"(([a-z]+)\s*:\s*([a-z]+))*", line)
     lst = [x for x in lst if not x == ('', '', '')]
     if len(lst) == 0:
         return ["Not Specified"]
     return lst
 
-def add_method_comments(lines, author):
+def add_method_comments(lines: List[str], author: str) -> List[str]:
     method_start_pattern = r"^\s*def\s+([a-zA-Z0-9\*]+)\s*\("
     method_end_pattern = r"->\s*([a-z]+):"
     i = 0
@@ -41,7 +42,7 @@ def add_method_comments(lines, author):
         i = i+1
     return lines
 
-def generate_file_comments(file_name, file_author):
+def generate_file_comments(file_name: str, file_author: str) -> str:
     file_comments = "\"\"\"\n"
     file_comments += ("File Name: "+file_name+"\n")
     file_comments += ("File Author: "+file_author+"\n")
@@ -51,7 +52,7 @@ def generate_file_comments(file_name, file_author):
     
     return file_comments
 
-def remove_previous_comments(lines):
+def remove_previous_comments(lines: List[str]) -> List[str]:
     new_lines = []
     insideComment = False
     for line in lines:
@@ -61,7 +62,7 @@ def remove_previous_comments(lines):
             new_lines.append(line)
     return new_lines
 
-def handle_arguments():
+def handle_arguments() -> None:
     parser = argparse.ArgumentParser(description="", usage="python java_comments.py (--file <file_location> | --folder <folder_location>) --author <author>")
     file_folder_group = parser.add_mutually_exclusive_group(required=True)
     file_folder_group.add_argument("--file", dest="file_location", type=str, help="full .java file location that needs to be commented")
@@ -76,7 +77,7 @@ def handle_arguments():
             print(f"The specified path '{args.folder_location}' is not a valid directory.")
             return
 
-def main(file_location, author):
+def main(file_location: str, author: str) -> None:
     file_name, _ = os.path.splitext(os.path.basename(file_location))
     with open(file_location, "r") as f:
         lines = [line.rstrip("\n") for line in f]

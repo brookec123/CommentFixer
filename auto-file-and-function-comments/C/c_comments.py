@@ -1,9 +1,10 @@
 import argparse
 import os
 import regex as re
+from typing import List
 from datetime import datetime
 
-def generate_method_comments(method_author, parameters):
+def generate_method_comments(method_author: str, parameters: List[str]) -> str:
     method_comments = ""
     method_comments += ("/// @brief Written by: "+method_author+"\n")
     parameters.pop(0)
@@ -13,7 +14,7 @@ def generate_method_comments(method_author, parameters):
     method_comments += ("/// @return ")
     return method_comments
 
-def add_method_comments(lines, author):
+def add_method_comments(lines: List[str], author: str) -> List[str]:
     method_comments_generated = set()
     prev_method = ""
     method_start_pattern = r"^\s*([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)\s*\("
@@ -26,7 +27,7 @@ def add_method_comments(lines, author):
             lines.insert(i, method_comments)
     return lines
 
-def generate_file_comments(file_name, file_author):
+def generate_file_comments(file_name: str, file_author: str) -> str:
     file_comments = ""
     file_comments += ("/// File Name: "+file_name+"\n")
     file_comments += ("/// File Author: "+file_author+"\n")
@@ -35,14 +36,46 @@ def generate_file_comments(file_name, file_author):
     
     return file_comments
 
-def remove_previous_comments(lines):
+def add_structure_comments(lines: List[str], author: str) -> List[str]:
+    default_structure_pattern = r"^struct (\S+)"
+    typedef_structure_start_pattern = r"^typedef struct (\S+)"
+    typedef_structure_end_pattern = r"^}(.+);"
+    
+    pass
+
+def generate_structure_comments(structure_name: str, structure_author: str) -> str:
+    pass
+
+def add_class_comments(lines: List[str], author: str) -> List[str]:
+    class_start_pattern = r"^class (\S+)" # no inheritence
+    for i in range(len(lines)):
+        match = re.match(class_start_pattern, lines[i])
+        if match:
+            class_comments = generate_class_comments(author)
+            lines.insert(i, class_comments)
+    return lines
+
+def generate_class_comments(class_author: str, inheritence_classes: List[str]=[""]) -> str:
+    class_comments = ""
+    class_comments += ("/// @brief Written by: "+class_author+"\n")
+    if inheritence_classes != "":
+        class_comments += ("/// Inherites: " + inheritence_classes[0])
+        inheritence_classes.pop(0)
+        for c in inheritence_classes:
+            class_comments += ", " + c
+        class_comments += "\n"
+        return class_comments
+
+
+
+def remove_previous_comments(lines: List[str]) -> List[str]:
     new_lines = []
     for line in lines:
         if not line.lstrip().startswith("/*") and not line.lstrip().startswith("*") and not line.lstrip().startswith("*/") and not line.lstrip().startswith("///"):
             new_lines.append(line)
     return new_lines
 
-def handle_arguments():
+def handle_arguments() -> None:
     parser = argparse.ArgumentParser(description="", usage="python c_comments.py (--file <file_location> | --folder <folder_location>) --author <author>")
     file_folder_group = parser.add_mutually_exclusive_group(required=True)
     file_folder_group.add_argument("--file", dest="file_location", type=str, help="full .h file location that needs to be commented")
@@ -63,7 +96,7 @@ def handle_arguments():
             main(file_path, args.author)
     
 
-def main(file_location, author):
+def main(file_location: str, author: str) -> None:
     file_name, file_extension = os.path.splitext(os.path.basename(file_location))
     with open(file_location, "r") as f:
         lines = [line.rstrip("\n") for line in f]

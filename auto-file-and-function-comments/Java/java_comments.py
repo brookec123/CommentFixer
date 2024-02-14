@@ -88,7 +88,5 @@ def main(file_location, author):
         for i in lines:
             f.write(str(i))
 
-
-
 if __name__ == "__main__":
     handle_arguments()
