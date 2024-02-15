@@ -1,13 +1,56 @@
 import argparse
 import os
-import regex as re
+import re
 from typing import List
 from datetime import datetime
+
+def generate_class_comments(class_author: str, class_name: str) -> str:
+    class_comments = ""
+    class_comments += ("/// Class Name: "+class_name+"\n")
+    class_comments += ("/// Class Author: "+class_author+"\n")
+    class_comments += ("/// Description: ")
+    return class_comments
+
+def add_class_comments(lines: List[str], author: str) -> List[str]:
+    constructor_comments_generated = set()
+    destructor_comments_generated = set()
+    inside_class = False
+    class_name = ""
+    class_no_inheritance_start_pattern = r"^class ([^\(\)\s]+)\s*(\{|$)"
+    class_end_pattern = r"\};\s*$"
+    constructor_start_pattern = rf"^\s*{class_name}\("
+    destructor_start_pattern = rf"^\s*~{class_name}\("
+    method_param_pattern = r"([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)"
+    i = 0
+    while i < len(lines):
+        match_class_no_inheritance_start = re.match(class_no_inheritance_start_pattern, lines[i])
+        match_class_end = re.match(class_end_pattern, lines[i])
+        if match_class_no_inheritance_start and not inside_class:
+            class_name = lines[i].replace("class", "")
+            class_name = class_name.replace("{", "")
+            class_name = class_name.strip()
+            lines.insert(i, generate_class_comments(author, class_name))
+            inside_class = True
+            constructor_start_pattern = rf"^\s*{class_name}\("
+            destructor_start_pattern = rf"^\s*~{class_name}\("
+        elif inside_class:
+            match_constructor_start = re.match(constructor_start_pattern, lines[i])
+            match_destructor_start = re.match(destructor_start_pattern, lines[i])
+            if match_class_end:
+                class_name = ""
+                inside_class = False
+            elif match_constructor_start and lines[i] not in constructor_comments_generated:
+                constructor_comments_generated.add(lines[i])
+                lines.insert(i, generate_method_comments(author, re.findall(method_param_pattern, lines[i])))
+            elif match_destructor_start and lines[i] not in destructor_comments_generated:
+                destructor_comments_generated.add(lines[i])
+                lines.insert(i, generate_method_comments(author, re.findall(method_param_pattern, lines[i])))
+        i += 1
+    return lines
 
 def generate_method_comments(method_author: str, parameters: List[str]) -> str:
     method_comments = ""
     method_comments += ("/// @brief Written by: "+method_author+"\n")
-    parameters.pop(0)
     for param in parameters:
         method_comments += ("/// @param "+param[1]+"\n")
         
@@ -17,10 +60,9 @@ def generate_method_comments(method_author: str, parameters: List[str]) -> str:
 def add_method_comments(lines: List[str], author: str) -> List[str]:
     method_comments_generated = set()
     prev_method = ""
-    method_start_pattern = r"^\s*([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)\s*\("
+    method_start_pattern = r"^\s*(\S+)\s+(\S+)\("
     method_param_pattern = r"([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)"
     for i in reversed(range(len(lines))):
-        print("Line:", lines[i])
         match = re.match(method_start_pattern, lines[i])
         if match and lines[i] != prev_method and match.group(2) not in method_comments_generated:
             prev_method = lines[i]
@@ -37,36 +79,6 @@ def generate_file_comments(file_name: str, file_author: str) -> str:
     file_comments += ("/// Description: ")
     
     return file_comments
-
-def add_structure_comments(lines: List[str], author: str) -> List[str]:
-    default_structure_pattern = r"^struct (\S+)"
-    typedef_structure_start_pattern = r"^typedef struct (\S+)"
-    typedef_structure_end_pattern = r"^}(.+);"
-    
-    pass
-
-def generate_structure_comments(structure_name: str, structure_author: str) -> str:
-    pass
-
-def add_class_comments(lines: List[str], author: str) -> List[str]:
-    class_start_pattern = r"^class (\S+)" # no inheritence
-    for i in range(len(lines)):
-        match = re.match(class_start_pattern, lines[i])
-        if match:
-            class_comments = generate_class_comments(author)
-            lines.insert(i, class_comments)
-    return lines
-
-def generate_class_comments(class_author: str, inheritence_classes: List[str]=[]) -> str:
-    class_comments = ""
-    class_comments += ("/// @brief Written by: "+class_author+"\n")
-    if inheritence_classes != []:
-        class_comments += ("/// Inherites: " + inheritence_classes[0])
-        inheritence_classes.pop(0)
-        for c in inheritence_classes:
-            class_comments += ", " + c
-        class_comments += "\n"
-        return class_comments
 
 def remove_previous_comments(lines: List[str]) -> List[str]:
     new_lines = []
@@ -91,7 +103,7 @@ def handle_arguments() -> None:
             return
 
     for filename in os.listdir(args.folder_location):
-        if filename.endswith(".h") or filename.endswith(".c"):
+        if filename.endswith(".h") or filename.endswith(".c") or filename.endswith(".cpp"):
             file_path = os.path.join(args.folder_location, filename)
             main(file_path, args.author)
     
@@ -106,7 +118,7 @@ def main(file_location: str, author: str) -> None:
     
     lines = add_class_comments(lines, author)
     
-    if file_extension == ".h":
+    if file_extension in (".h", ".hpp"):
         lines = add_method_comments(lines, author)
 
     with open(file_location, "w") as f:

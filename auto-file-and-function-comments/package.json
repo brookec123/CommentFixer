@@ -30,7 +30,7 @@
     "keybindings": [
       {
         "command": "auto-file-and-function-comments.comment-writer",
-        "key": "alt+W", 
+        "key": "alt+;", 
         "mac": "alt+W"
       }
     ]

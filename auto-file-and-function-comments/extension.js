@@ -17,10 +17,9 @@ function activate(context) {
             var fileName = vscode.window.activeTextEditor.document.fileName;
             var fileExtension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length) || fileName;
             var pythonScriptPath = "";
-            
+
             if (fileExtension == "c" || fileExtension == "cpp" || fileExtension == "h" || fileExtension == "hpp")
             {
-                // console.log(fileExtension)
                 // Path to your Python script
                 pythonScriptPath = path.join(__dirname, "//C//c_comments.py");
             }
@@ -45,9 +44,9 @@ function activate(context) {
 
 
             // Capture output from the child process
-            // pythonProcess.stdout.on("data", (data) => {
-            //     console.log(`Received data from Python script: ${data}`);
-            // });
+            pythonProcess.stdout.on("data", (data) => {
+                console.log(`Received data from Python script: ${data}`);
+            });
 
             pythonProcess.stderr.on("data", (data) => {
                 console.error(`Error from Python script: ${data}`);
