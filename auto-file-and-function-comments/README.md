@@ -27,7 +27,8 @@ This extension contributes the following settings:
 
 ## Known Issues
 - ~~Can not change author name in extension settings as intended~~
-- Does not properly comment classes (and class methods) in C++ and Python
+- Does not properly comment classes (with inheritance) in C++
+- Does not properly comment classes (and class methods) in Python
 - Currently overwrites previously generated comments if run more than once in the file
 
 ## Future Features
