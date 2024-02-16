@@ -24,15 +24,20 @@ Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  A
 This extension contributes the following settings:
 
 * `auto-file-and-function-comments.author`: The author's name for the file(s) and function(s).
+* `auto-file-and-function-comments.comment-writer.date`: Include current date in file comments.
+* `auto-file-and-function-comments.comment-writer.additional-file-comments`: 
+Any additional file comments that you want to add right above the description. (each item will be on a seperate line).
+* `auto-file-and-function-comments.comment-writer.additional-method-comments`: 
+Any additional method comments that you want to add right below the description. (each item will be on a seperate line).
+* `auto-file-and-function-comments.comment-writer.additional-adt-comments`: 
+Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line).
 
 ## Known Issues
-- ~~Can not change author name in extension settings as intended~~
 - Does not properly comment classes (with inheritance) in C++
 - Does not properly comment classes (and class methods) in Python
 - Currently overwrites previously generated comments if run more than once in the file
 
 ## Future Features
-
 - Add comments for other programming languages
 - Allow for comment rewrite or keep current comments for files/functions (determined by a user setting)
 - Allow user to add more/customize default comment lines
@@ -49,6 +54,9 @@ Added functionality for python files.
 
 ### 1.0.2
 Fixed ability to change author name.
+
+### 1.0.3
+Added basic ability to comment C++ classes (still does not support inherited C++ classes). Added ability to decide to include the date in the file comments and add additional comment lines for file, method, and adt comments.
 
 ---
 

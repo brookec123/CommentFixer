@@ -3,9 +3,44 @@ const path = require("path");
 const { spawn } = require("child_process");
 
 function getUserDefinedSettings() {
+    let userSettings = new Map();
+    let separator = '\\~\\\`/~/';
     const config = vscode.workspace.getConfiguration("brookec.auto-file-and-function-comments.comment-writer");
-    const author = config.get("author");
-    return author;
+    userSettings.set("author", config.get("author"));
+    userSettings.set("date", config.get("date"));
+    let additionalFileComments = config.get("additional-file-comments");
+    if (Array.isArray(additionalFileComments)) {
+        additionalFileComments = additionalFileComments.join(separator);
+    } else {
+        console.error("additional-file-comments is not an array");
+    }
+    userSettings.set("additional-file-comments", additionalFileComments);
+
+    let additionalMethodComments = config.get("additional-method-comments");
+    if (Array.isArray(additionalMethodComments)) {
+        additionalMethodComments = additionalMethodComments.join(separator);
+    } else {
+        console.error("additional-method-comments is not an array");
+    }
+    userSettings.set("additional-method-comments", additionalMethodComments);
+
+    let additionalADTComments = config.get("additional-adt-comments");
+    if (Array.isArray(additionalADTComments)) {
+        additionalADTComments = additionalADTComments.join(separator);
+    } else {
+        console.error("additional-adt-comments is not an array");
+    }
+    userSettings.set("additional-adt-comments", additionalADTComments);
+    return userSettings;
+}
+
+function generateCommand(pythonScriptPath, currentlyOpenTabfilePath, userSettings)
+{
+    let command = `python ${pythonScriptPath} --file ${currentlyOpenTabfilePath}`;
+    userSettings.forEach((value, key) => {
+        command += ` --${key} \"${value}\"`
+    });
+    return command;
 }
 
 function activate(context) {
@@ -34,14 +69,13 @@ function activate(context) {
                 pythonScriptPath = path.join(__dirname, "//Python//python_comments.py");
             }
             
-            console.log("Author from settings:", getUserDefinedSettings());
+            console.log("settings:", getUserDefinedSettings());
 
             // Construct the command to execute the Python script with arguments
-            let command = `python ${pythonScriptPath} --file ${currentlyOpenTabfilePath} --author "${getUserDefinedSettings()}"`;
-
+            let command = generateCommand(pythonScriptPath, currentlyOpenTabfilePath, getUserDefinedSettings());
+            console.log(command);
             // Execute the Python script in a child process
             const pythonProcess = spawn(command, { shell: true });
-
 
             // Capture output from the child process
             pythonProcess.stdout.on("data", (data) => {

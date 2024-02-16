@@ -5,8 +5,8 @@ def difference(minuend: float, subtrahend: float) -> float:
     dif = minuend - subtrahend
     return dif
 
-def printLine(line:str):
-    print(line, end="\n")
+def print_line(line_to_print:str):
+    print(line_to_print, end="\n")
 
 def empty():
     print("")

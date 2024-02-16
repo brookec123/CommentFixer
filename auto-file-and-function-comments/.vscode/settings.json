@@ -1,3 +1,7 @@
 {
-  "auto-file-and-function-comments.comment-writer.author": "CustomAuthor"
+  "auto-file-and-function-comments.comment-writer.author": "First Last",
+  "auto-file-and-function-comments.comment-writer.date": true,
+  "auto-file-and-function-comments.comment-writer.additional-file-comments": [],
+  "auto-file-and-function-comments.comment-writer.additional-method-comments": [],
+  "auto-file-and-function-comments.comment-writer.additional-adt-comments": [],
 }
