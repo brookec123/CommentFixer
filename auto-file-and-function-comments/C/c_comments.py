@@ -8,8 +8,9 @@ def generate_class_comments(class_author: str, class_name: str, additional_adt_c
     class_comments = ""
     class_comments += ("/// Class Name: "+class_name+"\n")
     class_comments += ("/// Class Author: "+class_author+"\n")
-    for comment in additional_adt_comments:
-        class_comments += ("/// " + comment + "\n")
+    if additional_adt_comments[0] != "":
+        for comment in additional_adt_comments:
+            class_comments += ("/// " + comment + "\n")
     class_comments += ("/// Description: ")
     return class_comments
 
@@ -53,8 +54,9 @@ def add_class_comments(lines: List[str], author: str, additional_adt_comments: L
 def generate_method_comments(method_author: str, parameters: List[str], additional_method_comments: List[str]) -> str:
     method_comments = ""
     method_comments += ("/// @brief Written by: "+method_author+"\n")
-    for comment in additional_method_comments:
-        method_comments += ("/// " + comment + "\n")
+    if additional_method_comments[0] != "":
+        for comment in additional_method_comments:
+            method_comments += ("/// " + comment + "\n")
     for param in parameters:
         method_comments += ("/// @param "+param[1]+"\n")
         
@@ -81,8 +83,9 @@ def generate_file_comments(file_name: str, file_author: str, include_date: bool,
     file_comments += ("/// File Author: "+file_author+"\n")
     if include_date:
         file_comments += ("/// Date: "+datetime.today().strftime("%Y-%m-%d")+"\n")
-    for comment in additional_file_comments:
-        file_comments += ("/// " + comment + "\n")
+    if additional_file_comments[0] != "":
+        for comment in additional_file_comments:
+            file_comments += ("/// " + comment + "\n")
     file_comments += ("/// Description: ")
     
     return file_comments

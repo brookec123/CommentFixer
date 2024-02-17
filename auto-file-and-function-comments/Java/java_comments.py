@@ -9,8 +9,9 @@ def generate_method_comments(method_name: str, method_author: str, return_type: 
     method_comments += ("/*"+"\n")
     method_comments += (" * Method Name: "+method_name+"\n")
     method_comments += (" * Method Author: "+method_author+"\n")
-    for comment in additional_method_comments:
-        method_comments += (" * " + comment + "\n")
+    if additional_method_comments[0] != "":
+        for comment in additional_method_comments:
+            method_comments += (" * " + comment + "\n")
     method_comments += (" * Description: "+"\n")
     method_comments += (" * Method Parameters: ")
     param = list(parameters[1])
@@ -30,10 +31,12 @@ def generate_file_comments(file_name: str, file_author: str, include_date: bool,
     file_comments += (" * File Author: "+file_author+"\n")
     if include_date:
         file_comments += (" * Date: "+datetime.today().strftime('%Y-%m-%d')+"\n")
-    for comment in additional_file_comments:
-        file_comments += (" * " + comment + "\n")
-    for comment in additional_adt_comments:
-        file_comments += (" * " + comment + "\n")
+    if additional_file_comments[0] != "":
+        for comment in additional_file_comments:
+            file_comments += (" * " + comment + "\n")
+    if additional_adt_comments[0] != "":
+        for comment in additional_adt_comments:
+            file_comments += (" * " + comment + "\n")
     file_comments += (" * Description: "+"\n")
     file_comments += (" */"+"\n\n")
     
