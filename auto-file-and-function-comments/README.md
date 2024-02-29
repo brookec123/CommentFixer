@@ -4,7 +4,7 @@ This extension will allow you to add comments to your Python, Java, C/C++ (and h
 
 ## Features
 
-Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  Adds function comments in .py, .java, .h, and .hpp files.
+Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  Adds function comments in .py, .java, .h, and .hpp files. Allows user to add more/customize default comment lines.
 
 # Languages Currently Supported (and Will be Supported in The Future)
 &#x2611; C
@@ -22,7 +22,6 @@ Adds file comments at the start for .py, .java, .c, .cpp, .h, and .hpp files.  A
 ## Extension Settings
 
 This extension contributes the following settings:
-
 * `auto-file-and-function-comments.author`: The author's name for the file(s) and function(s).
 * `auto-file-and-function-comments.comment-writer.date`: Include current date in file comments.
 * `auto-file-and-function-comments.comment-writer.additional-file-comments`: 
@@ -32,15 +31,16 @@ Any additional method comments that you want to add right below the description.
 * `auto-file-and-function-comments.comment-writer.additional-adt-comments`: 
 Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line).
 
+
 ## Known Issues
 - Does not properly comment classes (with inheritance) in C++
 - Does not properly comment classes (and class methods) in Python
 - Currently overwrites previously generated comments if run more than once in the file
 
+
 ## Future Features
-- Add comments for other programming languages
-- Allow for comment rewrite or keep current comments for files/functions (determined by a user setting)
-- Allow user to add more/customize default comment lines
+- Add comments for other programming languages.
+- Allow for comment rewrite or keep current comments for files/functions (determined by a user setting).
 
 ## Release Notes
 
@@ -60,6 +60,9 @@ Added basic ability to comment C++ classes (still does not support inherited C++
 
 ### 1.0.4
 Fixed some formating errors from previous version.
+
+### 1.0.5
+- Updated ReadMe and ChangeLog.
 
 ---
 

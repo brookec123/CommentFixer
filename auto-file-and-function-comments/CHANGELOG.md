@@ -19,3 +19,6 @@ All notable changes to the "Auto File and Function Comments" extension will be d
 
 ## [1.0.4]
 - Fixed some formating errors from previous version.
+
+## [1.0.5]
+- Updated ReadMe and ChangeLog.
