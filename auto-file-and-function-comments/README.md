@@ -58,6 +58,9 @@ Fixed ability to change author name.
 ### 1.0.3
 Added basic ability to comment C++ classes (still does not support inherited C++ classes). Added ability to decide to include the date in the file comments and add additional comment lines for file, method, and adt comments.
 
+### 1.0.4
+Fixed some formating errors from previous version.
+
 ---
 
 **Enjoy!**

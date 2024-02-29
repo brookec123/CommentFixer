@@ -44,23 +44,26 @@ def add_class_comments(lines: List[str], author: str, additional_adt_comments: L
                 inside_class = False
             elif match_constructor_start and lines[i] not in constructor_comments_generated:
                 constructor_comments_generated.add(lines[i])
-                lines.insert(i, generate_method_comments(author, re.findall(method_param_pattern, lines[i]), additional_method_comments))
+                lines.insert(i, generate_method_comments(author, "", re.findall(method_param_pattern, lines[i]), additional_method_comments))
             elif match_destructor_start and lines[i] not in destructor_comments_generated:
                 destructor_comments_generated.add(lines[i])
-                lines.insert(i, generate_method_comments(author, re.findall(method_param_pattern, lines[i]), additional_method_comments))
+                lines.insert(i, generate_method_comments(author, "", re.findall(method_param_pattern, lines[i]), additional_method_comments))
         i += 1
     return lines
 
-def generate_method_comments(method_author: str, parameters: List[str], additional_method_comments: List[str]) -> str:
+def generate_method_comments(method_author: str, return_type: str, parameters: List[str], additional_method_comments: List[str]) -> str:
     method_comments = ""
-    method_comments += ("/// @brief Written by: "+method_author+"\n")
+    method_comments += ("/// @brief Written by: "+method_author)
     if additional_method_comments[0] != "":
         for comment in additional_method_comments:
-            method_comments += ("/// " + comment + "\n")
+            method_comments += ("\n/// " + comment)
+    if return_type != "":
+        parameters.pop(0)
     for param in parameters:
-        method_comments += ("/// @param "+param[1]+"\n")
-        
-    method_comments += ("/// @return ")
+        print("0", param[0])
+        method_comments += ("\n/// @param "+param[1]+" ("+param[0]+")")
+    if return_type != "":
+        method_comments += ("\n/// @return (" + return_type + ")")
     return method_comments
 
 def add_method_comments(lines: List[str], author: str, additional_method_comments: List[str]) -> List[str]:
@@ -72,7 +75,10 @@ def add_method_comments(lines: List[str], author: str, additional_method_comment
         match = re.match(method_start_pattern, lines[i])
         if match and lines[i] != prev_method and match.group(2) not in method_comments_generated:
             prev_method = lines[i]
-            method_comments = generate_method_comments(author, re.findall(method_param_pattern, lines[i]), additional_method_comments)
+            parameters = re.findall(method_param_pattern, lines[i])
+            return_type = (parameters[0])[0]
+            print(parameters)
+            method_comments = generate_method_comments(author, return_type, parameters, additional_method_comments)
             lines.insert(i, method_comments)
 
     return lines
