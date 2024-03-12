@@ -2,6 +2,7 @@
   "name": "auto-file-and-function-comments",
   "displayName": "Auto File and Function Comments",
   "description": "This extension will allow you to add comments to your Java, C/C++ (and header), and python files.",
+  "icon": "./icon/auto-file-and-function-comments-icon.png",
   "publisher": "brookec",
   "version": "1.0.5",
   "engines": {
@@ -59,7 +60,7 @@
     "keybindings": [
       {
         "command": "auto-file-and-function-comments.comment-writer",
-        "key": "alt+W", 
+        "key": "alt+;", 
         "mac": "alt+W"
       }
     ]

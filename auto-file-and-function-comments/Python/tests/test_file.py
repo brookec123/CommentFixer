@@ -10,3 +10,4 @@ def print_line(line_to_print:str):
 
 def empty():
     print("")
+    
