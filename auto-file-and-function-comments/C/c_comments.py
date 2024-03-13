@@ -136,6 +136,7 @@ def main(file_location: str, author: str, include_date: str, additional_file_com
     else:
         include_date = False
     file_name, file_extension = os.path.splitext(os.path.basename(file_location))
+    file_name += file_extension
     with open(file_location, "r") as f:
         lines = [line.rstrip("\n") for line in f]
     lines = remove_previous_comments(lines)

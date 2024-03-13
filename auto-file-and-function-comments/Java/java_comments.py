@@ -73,7 +73,8 @@ def main(file_location: str, author: str, include_date: str, additional_file_com
         include_date = True
     else:
         include_date = False
-    file_name, _ = os.path.splitext(os.path.basename(file_location))
+    file_name, file_extension = os.path.splitext(os.path.basename(file_location))
+    file_name += file_extension
     lines = []
     file_comments_generated = False
     method_comments_generated = False

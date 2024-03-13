@@ -46,8 +46,10 @@ def add_method_comments(lines: List[str], author: str, additional_method_comment
         i += 1
     return lines
 
-def generate_class_comments(next_line_indent: str, class_name: str, class_author: str, additional_adt_comments: List[str]) -> str:
+def generate_class_comments(next_line_indent: str, base_class_name: str, class_name: str, class_author: str, additional_adt_comments: List[str]) -> str:
     class_comments = next_line_indent + "\"\"\"\n"
+    if base_class_name != None:
+        class_comments += (next_line_indent + "Base Class Name: "+base_class_name+"\n")
     class_comments += (next_line_indent + "Class Name: "+class_name+"\n")
     class_comments += (next_line_indent + "Class Author: "+class_author+"\n")
     if additional_adt_comments[0] != "":
@@ -58,13 +60,13 @@ def generate_class_comments(next_line_indent: str, class_name: str, class_author
     return class_comments
 
 def add_class_comments(lines: List[str], author: str, additional_adt_comments: List[str]) -> List[str]:
-    class_start_pattern = r"^\w*class ([_a-zA-Z0-9\*]+):" # no inheritance 
+    class_start_pattern = r"^\W*class ([_a-zA-Z0-9\*]+)\W*(:|\(([_a-zA-Z0-9\*]+)\):)" # with and without inheritance
     i = 0
     while i < len(lines):
         match = re.match(class_start_pattern, lines[i])
         if match:
             next_line_indent = find_indent(lines[i+1])
-            class_comments = generate_class_comments(next_line_indent, match[1], author, additional_adt_comments)
+            class_comments = generate_class_comments(next_line_indent, match[3], match[1], author, additional_adt_comments)
             lines.insert(i+1, class_comments)
         i += 1
     return lines
@@ -130,7 +132,8 @@ def main(file_location: str, author: str, include_date: str, additional_file_com
         include_date = True
     else:
         include_date = False
-    file_name, _ = os.path.splitext(os.path.basename(file_location))
+    file_name, file_extension = os.path.splitext(os.path.basename(file_location))
+    file_name += file_extension
     with open(file_location, "r") as f:
         lines = [line.rstrip("\n") for line in f]
     lines = remove_previous_comments(lines)
