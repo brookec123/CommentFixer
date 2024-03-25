@@ -62,7 +62,10 @@ Added basic ability to comment C++ classes (still does not support inherited C++
 Fixed some formating errors from previous version.
 
 ### 1.0.5
-- Updated ReadMe and ChangeLog.
+Updated ReadMe and ChangeLog.
+
+### 1.0.6
+Python classes (both inherited and not) can be commented. Added logo for extension.
 
 ---
 

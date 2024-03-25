@@ -22,3 +22,6 @@ All notable changes to the "Auto File and Function Comments" extension will be d
 
 ## [1.0.5]
 - Updated ReadMe and ChangeLog.
+
+## [1.0.6]
+- Python classes (both inherited and not) can be commented. Added logo for extension.

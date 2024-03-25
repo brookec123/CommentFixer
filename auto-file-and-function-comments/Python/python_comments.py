@@ -46,10 +46,11 @@ def add_method_comments(lines: List[str], author: str, additional_method_comment
         i += 1
     return lines
 
-def generate_class_comments(next_line_indent: str, base_class_name: str, class_name: str, class_author: str, additional_adt_comments: List[str]) -> str:
+def generate_class_comments(next_line_indent: str, base_class_name: List[str], class_name: str, class_author: str, additional_adt_comments: List[str]) -> str:
     class_comments = next_line_indent + "\"\"\"\n"
-    if base_class_name != None:
-        class_comments += (next_line_indent + "Base Class Name: "+base_class_name+"\n")
+    if base_class_name != []:
+        for base in base_class_name:
+            class_comments += (next_line_indent + "Base Class Name: "+base+"\n")
     class_comments += (next_line_indent + "Class Name: "+class_name+"\n")
     class_comments += (next_line_indent + "Class Author: "+class_author+"\n")
     if additional_adt_comments[0] != "":
@@ -59,14 +60,22 @@ def generate_class_comments(next_line_indent: str, base_class_name: str, class_n
     class_comments += "\n" + next_line_indent + "\"\"\""
     return class_comments
 
+def get_base_class_list(line: str) -> List[str]:
+    lst = re.findall(r"(([_a-zA-Z0-9\*]+)\s*)*", line)
+    lst = [x for x in lst if not x == ('', '', '')]
+    print(lst)
+    if len(lst) == 0:
+        lst = []
+    return lst
+
 def add_class_comments(lines: List[str], author: str, additional_adt_comments: List[str]) -> List[str]:
-    class_start_pattern = r"^\W*class ([_a-zA-Z0-9\*]+)\W*(:|\(([_a-zA-Z0-9\*]+)\):)" # with and without inheritance
+    class_start_pattern = r"^\W*class ([_a-zA-Z0-9\*]+)" # with and without inheritance
     i = 0
     while i < len(lines):
         match = re.match(class_start_pattern, lines[i])
         if match:
             next_line_indent = find_indent(lines[i+1])
-            class_comments = generate_class_comments(next_line_indent, match[3], match[1], author, additional_adt_comments)
+            class_comments = generate_class_comments(next_line_indent, get_base_class_list(lines[i]), match[1], author, additional_adt_comments)
             lines.insert(i+1, class_comments)
         i += 1
     return lines

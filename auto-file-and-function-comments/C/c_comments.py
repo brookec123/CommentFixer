@@ -4,8 +4,11 @@ import re
 from typing import List
 from datetime import datetime
 
-def generate_class_comments(class_author: str, class_name: str, additional_adt_comments: List[str]) -> str:
+def generate_class_comments(class_author: str, base_class_name: List[str], class_name: str, additional_adt_comments: List[str]) -> str:
     class_comments = ""
+    if base_class_name != []:
+        for base in base_class_name:
+            class_comments += ("/// Base Class Name: "+base[1]+" ("+base[0]+")\n")
     class_comments += ("/// Class Name: "+class_name+"\n")
     class_comments += ("/// Class Author: "+class_author+"\n")
     if additional_adt_comments[0] != "":
@@ -19,7 +22,9 @@ def add_class_comments(lines: List[str], author: str, additional_adt_comments: L
     destructor_comments_generated = set()
     inside_class = False
     class_name = ""
-    class_no_inheritance_start_pattern = r"^class ([^\(\)\s]+)\s*(\{|$)"
+    class_no_inheritance_start_pattern = r"^class ([a-zA-Z0-9\*]+)\s*(\{|$)"
+    class_with_inheritance_start_pattern = r"^class ([a-zA-Z0-9\*]+)\s*:"
+    base_class_pattern = r"([a-zA-Z0-9\*]+)\s+([a-zA-Z0-9\*]+)"
     class_end_pattern = r"\};\s*$"
     constructor_start_pattern = rf"^\s*{class_name}\("
     destructor_start_pattern = rf"^\s*~{class_name}\("
@@ -28,11 +33,24 @@ def add_class_comments(lines: List[str], author: str, additional_adt_comments: L
     while i < len(lines):
         match_class_no_inheritance_start = re.match(class_no_inheritance_start_pattern, lines[i])
         match_class_end = re.match(class_end_pattern, lines[i])
+        match_class_with_inheritance_start = re.match(class_with_inheritance_start_pattern, lines[i])
+        
         if match_class_no_inheritance_start and not inside_class:
             class_name = lines[i].replace("class", "")
             class_name = class_name.replace("{", "")
             class_name = class_name.strip()
-            lines.insert(i, generate_class_comments(author, class_name, additional_adt_comments))
+            lines.insert(i, generate_class_comments(author, [], class_name, additional_adt_comments))
+            inside_class = True
+            constructor_start_pattern = rf"^\s*{class_name}\("
+            destructor_start_pattern = rf"^\s*~{class_name}\("
+        elif match_class_with_inheritance_start and not inside_class:
+            line = lines[i]
+            line = lines[i].replace("class", "")
+            line = line.replace("{", "")
+            line = line.strip()
+            class_name = line[0:line.index(":")]
+            base_class_string = line[line.index(":")+1:]
+            lines.insert(i, generate_class_comments(author, re.findall(base_class_pattern, base_class_string), class_name, additional_adt_comments))
             inside_class = True
             constructor_start_pattern = rf"^\s*{class_name}\("
             destructor_start_pattern = rf"^\s*~{class_name}\("
@@ -53,7 +71,8 @@ def add_class_comments(lines: List[str], author: str, additional_adt_comments: L
 
 def generate_method_comments(method_author: str, return_type: str, parameters: List[str], additional_method_comments: List[str]) -> str:
     method_comments = ""
-    method_comments += ("/// @brief Written by: "+method_author)
+    method_comments += ("\n/// @brief ")
+    method_comments += ("\n/// @author "+method_author)
     if additional_method_comments[0] != "":
         for comment in additional_method_comments:
             method_comments += ("\n/// " + comment)
