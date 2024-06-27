@@ -5,5 +5,5 @@
 
 int sum(int a, int b);
 double difference(double a, double b);
-void printString(char** string);
+void printString(char **string);
 bool isAwesome();

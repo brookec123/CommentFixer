@@ -4,6 +4,43 @@ import re
 from typing import List
 from datetime import datetime
 
+def generate_struct_comments(struct_author: str, struct_name: str, additional_adt_comments: List[str]) -> str:
+    struct_comments = ""
+    struct_comments += ("/// Structure Name: "+struct_name+"\n")
+    struct_comments += ("/// Structure Author: "+struct_author+"\n")
+    if additional_adt_comments[0] != "":
+        for comment in additional_adt_comments:
+            struct_comments += ("/// " + comment + "\n")
+    struct_comments += ("/// Description: ")
+    return struct_comments
+
+def add_struct_comments(lines: List[str], author: str, additional_adt_comments: List[str], additional_method_comments: List[str]) -> List[str]:
+    inside_struct = False
+    struct_name = ""
+    struct_start_no_typedef_pattern = r"^struct ([a-zA-Z0-9\*]+)\s*(\{|$)"
+    struct_start_typedef_pattern = r"^typedef struct ([a-zA-Z0-9\*]+)\s*(\{|$)"
+    struct_end_no_typedef_pattern = r"\};\s*$"
+    struct_end_typedef_pattern = r"\}\S+;\s*$"
+    i = 0
+    while i < len(lines):
+        match_struct_no_typedef_start = re.match(struct_start_no_typedef_pattern, lines[i])
+        match_struct_typedef_start = re.match(struct_start_no_typedef_pattern, lines[i])
+        match_struct_no_typedef_end = re.match(struct_end_no_typedef_pattern, lines[i])
+        match_struct_typedef_end = re.match(struct_end_no_typedef_pattern, lines[i])
+
+        if match_struct_no_typedef_start and not inside_struct:
+            struct_name = lines[i].replace("class", "")
+            struct_name = struct_name.replace("{", "")
+            struct_name = struct_name.strip()
+            lines.insert(i, generate_struct_comments(author, [], struct_name, additional_adt_comments))
+            inside_struct = True
+        elif inside_struct:
+            if match_struct_no_typedef_end:
+                struct_name = ""
+                inside_struct = False
+        i += 1
+    return lines
+
 def generate_class_comments(class_author: str, base_class_name: List[str], class_name: str, additional_adt_comments: List[str]) -> str:
     class_comments = ""
     if base_class_name != []:

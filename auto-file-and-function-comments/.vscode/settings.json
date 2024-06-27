@@ -4,4 +4,7 @@
   "auto-file-and-function-comments.comment-writer.additional-file-comments": [],
   "auto-file-and-function-comments.comment-writer.additional-method-comments": [],
   "auto-file-and-function-comments.comment-writer.additional-adt-comments": [],
+  "files.associations": {
+    "stdbool.h": "c"
+  },
 }

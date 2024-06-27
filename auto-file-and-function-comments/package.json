@@ -2,65 +2,70 @@
   "name": "auto-file-and-function-comments",
   "displayName": "Auto File and Function Comments",
   "description": "This extension will allow you to add comments to your Java, C/C++ (and header), and python files.",
-  "icon": "./icon/auto-file-and-function-comments-icon.png",
+  "icon": "icon/auto-file-and-function-comments-icon.png",
   "publisher": "brookec",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "engines": {
     "vscode": "^1.84.0"
   },
   "categories": [
-    "Formatters", "Other"
+    "Formatters",
+    "Other"
   ],
-  "activationEvents": ["auto-file-and-function-comments.comment-writer"],
+  "activationEvents": [
+    "auto-file-and-function-comments.comment-writer"
+  ],
   "main": "./extension.js",
   "contributes": {
     "configuration": {
-        "properties": {
-            "brookec.auto-file-and-function-comments.comment-writer.author": {
-                "type": "string",
-                "default": "First Last",
-                "description": "Author of code in the file(s)."
-            },
-            "brookec.auto-file-and-function-comments.comment-writer.date": {
-              "type": "boolean",
-              "default": true,
-              "description": "Include current date in file comments."
-            },
-            "brookec.auto-file-and-function-comments.comment-writer.additional-file-comments": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "default": [],
-              "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
-            },
-            "brookec.auto-file-and-function-comments.comment-writer.additional-method-comments": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "default": [],
-              "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
-            },
-            "brookec.auto-file-and-function-comments.comment-writer.additional-adt-comments": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "default": [],
-              "description": "Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line)."
-            }
+      "properties": {
+        "brookec.auto-file-and-function-comments.comment-writer.author": {
+          "type": "string",
+          "default": "First Last",
+          "description": "Author of code in the file(s)."
         },
-        "title": "Auto File and Function Comments"
+        "brookec.auto-file-and-function-comments.comment-writer.date": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include current date in file comments."
+        },
+        "brookec.auto-file-and-function-comments.comment-writer.additional-file-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
+        },
+        "brookec.auto-file-and-function-comments.comment-writer.additional-method-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.comment-writer.additional-adt-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line)."
+        }
+      },
+      "title": "Auto File and Function Comments"
     },
-    "commands": [{
-      "command": "auto-file-and-function-comments.comment-writer",
-      "title": "Comment Writer"
-    }],
+    "commands": [
+      {
+        "command": "auto-file-and-function-comments.comment-writer",
+        "title": "Comment Writer"
+      }
+    ],
     "keybindings": [
       {
         "command": "auto-file-and-function-comments.comment-writer",
-        "key": "alt+;", 
+        "key": "alt+;",
         "mac": "alt+W"
       }
     ]
