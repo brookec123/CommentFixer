@@ -33,14 +33,13 @@ Any additional adt (like classes, structures, unions, enumerations, etc.) commen
 
 
 ## Known Issues
-- Does not properly comment classes (with inheritance) in C++
-- Does not properly comment classes (and class methods) in Python
 - Currently overwrites previously generated comments if run more than once in the file
 
 
 ## Future Features
 - Add comments for other programming languages.
 - Allow for comment rewrite or keep current comments for files/functions (determined by a user setting).
+- Allow user to have different preferences/user settings for each language.
 
 ## Release Notes
 
@@ -66,6 +65,9 @@ Updated ReadMe and ChangeLog.
 
 ### 1.0.6
 Python classes (both inherited and not) can be commented. C++ classes (both inherited and not) can be commented. Added logo for extension.
+
+### 1.0.7
+Updated ReadMe and ChangeLog.
 
 ---
 

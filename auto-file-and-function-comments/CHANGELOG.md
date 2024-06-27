@@ -27,3 +27,6 @@ All notable changes to the "Auto File and Function Comments" extension will be d
 - Python classes (both inherited and not) can be commented.
 - C++ classes (both inherited and not) can be commented.
 - Added logo for extension.
+
+## [1.0.7]
+- Updated ReadMe and ChangeLog.
