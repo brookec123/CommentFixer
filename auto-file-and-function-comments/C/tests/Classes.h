@@ -4,6 +4,7 @@
 class Person
 {
     int age;
+
 public:
     Person();
     Person(int age);

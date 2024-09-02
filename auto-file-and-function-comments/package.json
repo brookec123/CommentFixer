@@ -19,17 +19,17 @@
   "contributes": {
     "configuration": {
       "properties": {
-        "brookec.auto-file-and-function-comments.comment-writer.author": {
+        "brookec.auto-file-and-function-comments.default.comment-writer.author": {
           "type": "string",
           "default": "First Last",
           "description": "Author of code in the file(s)."
         },
-        "brookec.auto-file-and-function-comments.comment-writer.date": {
+        "brookec.auto-file-and-function-comments.default.comment-writer.date": {
           "type": "boolean",
           "default": true,
           "description": "Include current date in file comments."
         },
-        "brookec.auto-file-and-function-comments.comment-writer.additional-file-comments": {
+        "brookec.auto-file-and-function-comments.default.comment-writer.additional-file-comments": {
           "type": "array",
           "items": {
             "type": "string"
@@ -37,7 +37,7 @@
           "default": [],
           "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
         },
-        "brookec.auto-file-and-function-comments.comment-writer.additional-method-comments": {
+        "brookec.auto-file-and-function-comments.default.comment-writer.additional-method-comments": {
           "type": "array",
           "items": {
             "type": "string"
@@ -45,7 +45,148 @@
           "default": [],
           "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
         },
-        "brookec.auto-file-and-function-comments.comment-writer.additional-adt-comments": {
+        "brookec.auto-file-and-function-comments.default.comment-writer.additional-adt-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.c.comment-writer.author": {
+          "type": "string",
+          "default": "First Last",
+          "description": "Author of code in the file(s)."
+        },
+        "brookec.auto-file-and-function-comments.c.comment-writer.date": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include current date in file comments."
+        },
+        "brookec.auto-file-and-function-comments.c.comment-writer.additional-file-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
+        },
+        "brookec.auto-file-and-function-comments.c.comment-writer.additional-method-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.c.comment-writer.additional-adt-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.java.comment-writer.author": {
+          "type": "string",
+          "default": "First Last",
+          "description": "Author of code in the file(s)."
+        },
+        "brookec.auto-file-and-function-comments.java.comment-writer.date": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include current date in file comments."
+        },
+        "brookec.auto-file-and-function-comments.java.comment-writer.additional-file-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
+        },
+        "brookec.auto-file-and-function-comments.java.comment-writer.additional-method-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.java.comment-writer.additional-adt-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional adt (like classes, structures, unions, enumerations, etc.) comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.author": {
+          "type": "string",
+          "default": "First Last",
+          "description": "Author of code in the python file(s)."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.date": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include current date in python file comments."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.comment_file_format": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "\"\"\"",
+            "File Name: %file_name%",
+            "File Author: %author%",
+            "Description: ",
+            "\"\"\""
+          ],
+          "description": "Format for file comments. You can use variables such as %file_name%, %author%, and %date% to be replaced with the actual file name/author/date in the comments. The default will appear as follows (given file name is \"test_file\"and author is \"First Last\"):\n\n\"\"\"\nFile Name: test_file\nFile Author: First Last\nDescription:\n\"\"\""
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.additional-file-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional file comments that you want to add right above the description. (each item will be on a seperate line). An example is:\nCompany Name: My Company\n Department: IT"
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.comment_method_format": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "\"\"\"",
+            "Method Name: %method_name%",
+            "Description: Written by: %author%",
+            "### Parameters",
+            "[- %parameter_name%:%parameter_type%\\n]...",
+            "### Returns",
+            "- %return_type%",
+            "\"\"\""
+          ],
+          "description": "Format for method comments. You can use variables such as %file_name%, %class_name%, %method_name%, %access_specifier%, %author%, %date%, %parameter_name%, %parameter_type%, and %return_type% to be replaced with the actual file name/class name/mehtod name/access specifier/author/date/parameter names/parameter types/return types in the commentsThe default will appear as follows (given method name is \"sum\", author is \"First Last\", parameters are a (int) and b (int), and it returns an int):\n\n\"\"\"\nMethod Name: sum\nDescription: Written by: First Last\n### Parameters\n- a:int\n- b:int\n### Returns\n- int\n\"\"\"."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.additional-method-comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Any additional method comments that you want to add right below the description. (each item will be on a seperate line)."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.comment_adt_format": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Format for adt comments. You can use variables such as %file_name%, %class_name%, %parent_class%, %access_specifier%, %author%, %date% to be replaced with the actual file name/class name/parent class name/access specifier/author/date in the comments."
+        },
+        "brookec.auto-file-and-function-comments.python.comment-writer.additional-adt-comments": {
           "type": "array",
           "items": {
             "type": "string"
@@ -65,7 +206,7 @@
     "keybindings": [
       {
         "command": "auto-file-and-function-comments.comment-writer",
-        "key": "alt+W",
+        "key": "alt+;",
         "mac": "alt+W"
       }
     ]

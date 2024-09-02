@@ -136,6 +136,66 @@ def handle_arguments() -> None:
             file_path = os.path.join(args.folder_location, filename)
             main(file_path, args.author, args.date, create_additional_comment_list(args.additional_file_comments), create_additional_comment_list(args.additional_method_comments), create_additional_comment_list(args.additional_adt_comments))   
 
+def list_to_string(list: List[str], indent: str) -> str:
+    string = indent+list[0]
+    for index in range(1, len(list)):
+        string += "\n"+indent+list[index]
+    return string
+
+def parse_user_defined_format_comment(comment: List[str], first_line_indent: str, f_n: str, f_e: str, c_n: str, m_n: str, a_s: str, a: str, d: str, p_n: List[str], p_t: List[str], r_t: str):
+    lead = (first_line_indent+"\"\"\"\n")
+    comment = list_to_string(comment, first_line_indent)
+    comment = lead + comment
+    user_defined_setting_variable_strings = ["%file_name%", "%file_extension%", "%author%", "%date%", "%class_name%", "%return_type%"]
+    variables_to_replace_strings_with = [f_n, f_e, a, d, c_n, r_t]
+    user_defined_setting_list_strings = ["%parameter_name%", "%parameter_type%"]
+    # variables_to_replace_items_with = [p_n, p_t]
+    subsection_format = ""
+    seperator = "\n"
+    
+    inside_of_a_subsection = False
+    start_of_subsection_index = 0
+    
+    i = 0
+    while i < len(comment) - 1:
+        if not inside_of_a_subsection and comment[i] == "%" and comment[i+1] == "[":
+            inside_of_a_subsection = True
+            start_of_subsection_index = i
+            subsection_format = ""
+            seperator = "\n"
+        elif inside_of_a_subsection and not (comment[i] == "%" and comment[i+1] == "]"):
+            subsection_format += comment[i]
+        elif inside_of_a_subsection:
+            subsection_format=subsection_format[1:]
+            # determine/remove seperator from format
+            seperator = subsection_format[subsection_format.find("%s=")+3:]
+            subsection_format = subsection_format[:subsection_format.find("%s=")]
+            comment = f"{comment[:start_of_subsection_index]}{comment[start_of_subsection_index+len(subsection_format)+len("%s="+seperator+"%]...%")+2:]}"
+            seperator = seperator.replace("\\n", "\n"+first_line_indent)
+            
+            # first occurence of subsection
+            current_subsection_string = subsection_format
+            current_subsection_string = current_subsection_string.replace(user_defined_setting_list_strings[0], p_n[0])
+            current_subsection_string = current_subsection_string.replace(user_defined_setting_list_strings[1], p_t[0])
+            comment = f"{comment[:start_of_subsection_index]}{current_subsection_string}{comment[start_of_subsection_index:]}"
+            start_of_subsection_index += len(current_subsection_string)
+            
+            # subsequent occurences of subsection
+            for j in range(1, max(len(p_n), len(p_t))):
+                current_subsection_string = subsection_format
+                current_subsection_string = current_subsection_string.replace(user_defined_setting_list_strings[0], p_n[j])
+                current_subsection_string = current_subsection_string.replace(user_defined_setting_list_strings[1], p_t[j])
+                comment = f"{comment[:start_of_subsection_index]}{seperator+current_subsection_string}{comment[start_of_subsection_index:]}"
+                start_of_subsection_index += len(current_subsection_string+seperator)
+            inside_of_a_subsection = False
+        i += 1
+            
+    
+    for i in range(len(user_defined_setting_variable_strings)):
+        comment = comment.replace(user_defined_setting_variable_strings[i], variables_to_replace_strings_with[i])
+    comment += ("\n"+first_line_indent+"\"\"\"")
+    return comment
+
 def main(file_location: str, author: str, include_date: str, additional_file_comments: List[str], additional_method_comments: List[str], additional_adt_comments: List[str]) -> None:
     if include_date == "true":
         include_date = True
@@ -157,4 +217,6 @@ def main(file_location: str, author: str, include_date: str, additional_file_com
             f.write(line + "\n")
 
 if __name__ == "__main__":
-    handle_arguments()
+    print(parse_user_defined_format_comment(["@file %file_name%", "%[%parameter_name%: %parameter_type%%s=, %]...%", "@author %author%", "@brief", "%[- %parameter_name%: %parameter_type%%s=\\n%]...%"], "  ", "test_file", ".py", "", "", "", "Brooke Cronin", "July 30, 2024", ["a", "b", "c"], ["int", "double", "str"], ""))
+    pass
+    # handle_arguments()
